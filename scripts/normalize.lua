@@ -26,7 +26,7 @@ local function ensure_not_exists(fp)
 end
 
 ensure_not_exists(opt.output)
-if opt.stats_output then
+if opt.stats_output ~= "" then
 	ensure_not_exists(opt.stats_output)
 end
 
@@ -34,7 +34,7 @@ print("Loading data.")
 local data = image_utils.load(opt.input)
 local params = {gcn = opt.gcn, lcn = opt.lcn}
 
-if opt.stats_input then
+if opt.stats_input ~= "" then
 	local file = hdf5.open(opt.stats_input, 'r')
 	params.mean = {}
 	params.std = {}
@@ -54,7 +54,7 @@ end
 
 local mean, std = image_utils.normalize(data, params)
 
-if params.stats_output then
+if opt.stats_output ~= "" then
 	print("Saving statistics to '" .. opt.stats_output .. "'.")
 	local file = hdf5.open(opt.stats_output, 'w')
 	assert(#mean == #std)
