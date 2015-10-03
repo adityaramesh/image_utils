@@ -34,6 +34,20 @@ print("Loading data.")
 local data = image_utils.load(opt.input)
 local params = {gcn = opt.gcn, lcn = opt.lcn}
 
+local function tensor_to_number(x)
+	if x:nDimension() == 1 and x:size(1) == 1 then
+		return x[1]
+	end
+	return x
+end
+
+local function number_to_tensor(x)
+	if type(x) == "number" then
+		return torch.DoubleTensor{x}
+	end
+	return x
+end
+
 if opt.stats_input ~= "" then
 	local file = hdf5.open(opt.stats_input, 'r')
 	params.mean = {}
@@ -44,9 +58,9 @@ if opt.stats_input ~= "" then
 		local std_num = string.match(k, "std_(%d+)")
 
 		if mean_num then
-			params.mean[tonumber(mean_num)] = file:read(k):all()
+			params.mean[tonumber(mean_num)] = tensor_to_number(file:read(k)):all()
 		elseif std_num then
-			params.std[tonumber(std_num)] = file:read(k):all()
+			params.std[tonumber(std_num)] = tensor_to_number(file:read(k):all())
 		end
 	end
 	file:close()
@@ -60,8 +74,8 @@ if opt.stats_output ~= "" then
 	assert(#mean == #std)
 	
 	for i = 1, #mean do
-		file:write("/mean_" .. i, mean[i])
-		file:write("/std_" .. i, std[i])
+		file:write("/mean_" .. i, number_to_tensor(mean[i]))
+		file:write("/std_" .. i, number_to_tensor(std[i]))
 	end
 	file:close()
 end
