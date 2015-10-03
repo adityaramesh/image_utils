@@ -1,4 +1,6 @@
-package.path = package.path .. ";./image_utils/?.lua"
+require "lfs"
+local cwd = lfs.currentdir()
+package.path = package.path .. ";" .. cwd .. "/image_utils/?.lua"
 
 require "image"
 require "image_utils"
