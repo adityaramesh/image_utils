@@ -185,7 +185,7 @@ local function do_global_normalization(data, opt, itype, width, height, channels
 
 		if channels == 1 then
 			if std[1] > std_tol then
-				data.inputs:add(-1, mean[1]):div(std[1])
+				data.inputs:add(-mean[1]):div(std[1])
 			else
 				print("std[1]=" .. std[1] .. "; skipping scaling.")
 			end
@@ -194,7 +194,7 @@ local function do_global_normalization(data, opt, itype, width, height, channels
 				print("Working on channel " .. i .. ".")	
 
 				if std[i] > std_tol then
-					data.inputs[{{}, i}]:add(-1, mean[i]):div(std[i])
+					data.inputs[{{}, i}]:add(-mean[i]):div(std[i])
 				else
 					print("std[" .. i .. "]=" .. std[i] ..
 						"; skipping scaling.")
