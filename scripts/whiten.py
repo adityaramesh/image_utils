@@ -10,9 +10,9 @@ import numpy as np
 from scipy.linalg import svd
 
 parser = argparse.ArgumentParser(description="Performs ZCA whitening on images.")
-parser.add_argument("-epsilon", type=float, nargs=1, default=1e-7,
+parser.add_argument("-epsilon", type=float, nargs=1, default=[1e-7],
     help="For conditioning of the scaling transformation used in ZCA.")
-parser.add_argument("-max_sample_size", type=int, nargs=1, default=4000,
+parser.add_argument("-max_sample_size", type=int, nargs=1, default=[4000],
     help="Maximum sample size to use for ZCA.")
 
 parser.add_argument("-input", type=str, nargs=1, help="Path to input file.")
@@ -25,11 +25,12 @@ parser.add_argument("-stats_output", type=str, nargs=1,
 args            = parser.parse_args()
 input_fp        = args.input[0]
 output_fp       = args.output[0]
+epsilon         = args.epsilon[0]
 max_sample_size = args.max_sample_size[0]
 stats_input_fp  = None if not args.stats_input else args.stats_input[0]
 stats_output_fp = None if not args.stats_output else args.stats_output[0]
 
-assert(args.epsilon > 0 and args.epsilon < 1)
+assert(epsilon > 0 and epsilon < 1)
 
 def ensure_not_exists(fp):
     if os.path.isfile(fp):
@@ -92,7 +93,7 @@ else:
         stats_file["eigenvectors"] = v
 
 print("Computing ZCA transformation.")
-s_cond = np.sqrt(s**2 + args.epsilon)
+s_cond = np.sqrt(s**2 + epsilon)
 w_zca = np.dot(v.T, np.dot(np.diag(1 / s_cond), v))
 
 print("Whitening data.")
