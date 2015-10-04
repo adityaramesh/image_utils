@@ -76,8 +76,8 @@ if opt.stats_output ~= "" then
 	assert(#mean == #std)
 	
 	for i = 1, #mean do
-		file:write("/mean_" .. i, number_to_tensor(mean[i]))
-		file:write("/std_" .. i, number_to_tensor(std[i]))
+		file:write("mean_" .. i, number_to_tensor(mean[i]))
+		file:write("std_" .. i, number_to_tensor(std[i]))
 	end
 	file:close()
 end
