@@ -30,7 +30,7 @@ max_sample_size = args.max_sample_size[0]
 stats_input_fp  = None if not args.stats_input else args.stats_input[0]
 stats_output_fp = None if not args.stats_output else args.stats_output[0]
 
-assert(epsilon > 0 and epsilon < 1)
+assert(epsilon >= 0 and epsilon < 1)
 
 def ensure_not_exists(fp):
     if os.path.isfile(fp):
