@@ -1,10 +1,4 @@
 require "lfs"
-local cwd = lfs.currentdir()
-package.path = package.path .. ";" .. cwd .. "/torch_utils/?.lua;" ..
-	cwd ..  "/torch_utils/torch_utils/?.lua"
-package.path = package.path .. ";" .. cwd .. "/image_utils/?.lua;" ..
-	cwd ..  "/image_utils/image_utils/?.lua"
-
 require "image"
 require "image_utils"
 
