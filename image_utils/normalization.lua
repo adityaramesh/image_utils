@@ -254,7 +254,10 @@ function image_utils.normalize(data, opt)
 		validate_options(data, opt)
 	local mean, std = do_global_normalization(data, opt, itype, width,
 		height, channels)
-	do_local_normalization(data, opt, lcn_channels, itype, count, channels)
+
+	if opt.lcn ~= "none" then
+		do_local_normalization(data, opt, lcn_channels, itype, count, channels)
+	end
 
 	print("Done.")
 	return mean, std
